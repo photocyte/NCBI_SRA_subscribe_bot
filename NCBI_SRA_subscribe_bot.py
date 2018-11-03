@@ -107,7 +107,7 @@ html_footer = '</body>\
 text = "If you can't see the HTML table assosciated with this email, double check that your email client can read HTML."
 
 ##Could probably parse this all from ElementTree, but it broke my brain to think about XML so much.  Prefer the Python/Json syntax
-##See here for the badgerfish standard: 
+##See here an explanation of the badgerfish standard: https://xmljson.readthedocs.io/en/latest/
 document_count = 0
 root_summary = ET.fromstring(summaries.text)
 documents = xmljson.badgerfish.data(root_summary)["eSummaryResult"]["DocSum"]
