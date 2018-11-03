@@ -21,13 +21,13 @@ now_str = now.strftime("%Y-%m-%d %H:%M%p %Z")
 pandas.set_option('display.max_colwidth', -1)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-t',required=True,type=int,metavar='NCBI_TAXONID')
-parser.add_argument('-f',required=False,default=False,action='store_true')
-parser.add_argument('--reldate',default=14,type=int)
-parser.add_argument('--api_key',default=None,type=str)
-parser.add_argument('--cachepath',default="/tmp/sra_bot",type=str)
-parser.add_argument('--gmail_password',default=None,type=str)
-parser.add_argument('--gmail_sender',default=None,type=str)
+parser.add_argument('-t',required=True,type=int,metavar='NCBI_TAXONID',help="The NCBI taxonid for your taxa of interest. Use the latin / common names here to search for the NCBI taxonid: https://www.ncbi.nlm.nih.gov/taxonomy/ . The script will recover all records that descend from the given taxonomic node")
+parser.add_argument('-f',required=False,default=False,action='store_true',help="Force the execution of the script even though there are >10,000 records")
+parser.add_argument('--reldate',default=14,type=int,help="Number of days (relative to the present) to pull off SRA. E.g. past 2 weeks is 14. Default=14")
+parser.add_argument('--api_key',default=None,type=str,help="Your NCBI API key (optional, but good practice)")
+parser.add_argument('--cachepath',default="/tmp/sra_bot",type=str,help="The base path for cached .XML,.JSON,.HTML files (useful for debugging). Default=/tmp/sra_bot")
+parser.add_argument('--gmail_password',default=None,type=str,help="Your gmail password")
+parser.add_argument('--gmail_sender',default=None,type=str,help="Your gmail username (including the @whatever.edu)")
 args = parser.parse_args()
 
 sra_id_re = re.compile("Run acc=\"([0-9a-zA-Z_]+)\"")
@@ -143,7 +143,7 @@ cache_file.close()
 
 sys.stderr.write("NCBI SRA returned "+str(len(documents))+" documents.\n")
 
-columns=["SRA_ID","Study","Title","Submitter","Species","Library type","# of reads","# of bp"]
+columns=["SRA_ID","Study","Title","Submitter","Institution","Species","Library type","# of reads"]
 SRA_DF = pandas.DataFrame(columns=columns)
 for subdoc in documents:
    theData = dict()
@@ -165,6 +165,7 @@ for subdoc in documents:
    theData["Study"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Study"]["@name"]
    theData["Title"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Summary"]["Title"]["$"]
    theData["Submitter"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Submitter"]["@contact_name"]
+   theData["Institution"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Submitter"]["@center_name"]
    try:
        theData["Species"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Organism"]["@ScientificName"]
    except KeyError:
@@ -199,7 +200,9 @@ else:
 
 if args.gmail_password == None or args.gmail_sender == None:
     sys.stderr.write("\nERROR: Password or username not defined for email sending.\n")
-    sys.stderr.write("Define these using the '--gmail_password' and '--gmail_sender' arguments")
+    sys.stderr.write("Define these using the '--gmail_password' and '--gmail_sender' arguments\n")
+    sys.stderr.write("You can still view the HTML file, which is equivalent to what would be emailed.\n")
+    sys.stderr.write("Script exiting...\n")
     exit()
 
 me = args.gmail_sender
