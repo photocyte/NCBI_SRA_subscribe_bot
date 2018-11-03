@@ -28,7 +28,9 @@ parser.add_argument('--api_key',default=None,type=str,help="Your NCBI API key (o
 parser.add_argument('--cachepath',default="/tmp/sra_bot",type=str,help="The base path for cached .XML,.JSON,.HTML files (useful for debugging). Default=/tmp/sra_bot")
 parser.add_argument('--gmail_password',default=None,type=str,help="Your gmail password")
 parser.add_argument('--gmail_sender',default=None,type=str,help="Your gmail username (including the @whatever.edu)")
+parser.add_argument('--email_recipient',default=None,type=str,help="The email address you'd like to send results to (including the @whatever.edu). Default=Whatever --gmail_sender is")
 args = parser.parse_args()
+
 
 sra_id_re = re.compile("Run acc=\"([0-9a-zA-Z_]+)\"")
 
@@ -180,6 +182,7 @@ SRA_DF.index += 1
 
 html += str(len(documents))+" SRA updates for "+rank+" "+name+" within the last "+str(args.reldate)+" days.<br>"
 html += "This search ran on "+now_str+"<br>"
+html += "Script source is here: <a href=\"https://github.com/photocyte/NCBI_SRA_subscribe_bot\">https://github.com/photocyte/NCBI_SRA_subscribe_bot</a><br>"
 html += SRA_DF.to_html()
 html = html.replace("&lt;","<")
 html = html.replace("&gt;",">")
@@ -205,8 +208,11 @@ if args.gmail_password == None or args.gmail_sender == None:
     sys.stderr.write("Script exiting...\n")
     exit()
 
+if args.email_recipient == None:
+   args.email_recipient = args.gmail_sender
+
 me = args.gmail_sender
-you = args.gmail_sender
+you = args.email_recipient
 msg = email.mime.multipart.MIMEMultipart('alternative')
 subject_str = str(len(documents))+" SRA updates for "+rank+" "+name+" within the last "+str(args.reldate)+" days."
 subject = email.header.Header(subject_str, 'UTF-8')
