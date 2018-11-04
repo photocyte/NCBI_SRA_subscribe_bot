@@ -145,7 +145,7 @@ cache_file.close()
 
 sys.stderr.write("NCBI SRA returned "+str(len(documents))+" documents.\n")
 
-columns=["SRA_ID","Study","Title","Submitter","Institution","Species","Library type","# of reads"]
+columns=["SRA_ID","Study","Title","Submitter","Institution","Species","Library type","# of reads","CreateDate","UpdateDate"]
 SRA_DF = pandas.DataFrame(columns=columns)
 for subdoc in documents:
    theData = dict()
@@ -174,9 +174,11 @@ for subdoc in documents:
        ##Try the common name
        theData["Species"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Organism"]["@CommonName"]
    theData["Library type"]=subdoc["Item"]["ExpXml"]["ExpXml"]["Library_descriptor"]["LIBRARY_STRATEGY"]["$"]
+   theData["CreateDate"]=subdoc["Item"]["CreateDate"]
+   theData["UpdateDate"]=subdoc["Item"]["UpdateDate"]
    SRA_DF = SRA_DF.append(theData,sort=False,ignore_index=True)
 
-SRA_DF = SRA_DF.sort_values(by=['Study', 'Title','Species','Library type','SRA_ID'])
+SRA_DF = SRA_DF.sort_values(by=['CreateDate','Study', 'Title','Species','Library type','SRA_ID'])
 SRA_DF = SRA_DF.reset_index(drop=True)
 SRA_DF.index += 1
 
