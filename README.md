@@ -9,10 +9,11 @@ The script uses realtime querying of the NCBI databases, and uses Gmail's SMTP s
 ## Dependencies
 
  * python3
- * xmljson
- * pandas
+ * [requests](http://docs.python-requests.org/en/master/)
+ * [xmljson](https://pypi.org/project/xmljson/)
+ * [pandas](https://pandas.pydata.org)
 
- The rest of the dependencies should be included with standard python3 installs.
+These are all python dependencies installable with pip/MacPorts/HomeBrew depending on your setup. The rest of the dependencies should be included with standard python3 installs.
 
  
 ## Usage 
