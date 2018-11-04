@@ -1,7 +1,9 @@
 # NCBI_SRA_subscribe_bot
 This is a python script/bot which is intended to run on a regular basis (e.g. every week, or every 2 weeks), and email you when new [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra) records from a particular taxonomic grouping are available.  
 
-The SRA *may* already allow you to subscribe to new data by email updates, but if it exists I haven't found it. (Please let me know if you do!)
+The SRA *may* already allow you to subscribe to new data by email updates in this way, but if it exists I haven't found it. (Please let me know if you are aware of such a service!)
+
+The script uses realtime querying of the NCBI databases, and uses Gmail's SMTP server to send the email, so internet access to those servers is required.
 
 
 ## Dependencies
@@ -21,7 +23,7 @@ This script command line would email you all the elaterid (Family Elateridae; NC
 
 `python3 NCBI_SRA_subscribe_bot.py -h` to see the help documentation
 
-Scheduling to run regularly isn't handled by this script. The idea is you'd use a scheduler for your own OS to regularly run the script without your supervision.  E.g. cron to run the script every 2 weeks 
+The scheduling to run regularly isn't handled by this script. The idea is you'd use a scheduler for your own OS to regularly run the script without your supervision.  E.g. cron to run the script every 2 weeks 
 
 ## FAQ
  * Q: I have to put my password into the command line to enable automatically emailing of results, is my email password exposed?
