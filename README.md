@@ -1,5 +1,5 @@
 # NCBI_SRA_subscribe_bot
-This is a python script/bot which is intended to run on a regular basis (e.g. every week, or every 2 weeks), and email you when new [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra) records from a particular taxonomic grouping are available.  
+This is a python script/bot which is intended to run on a regular basis (e.g. every week, or every 2 weeks), and emails you when new [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra) records from a particular taxonomic grouping are available.  
 
 The SRA *may* already allow you to subscribe to new data by email updates in this way, but if it exists I haven't found it. (Please let me know if you are aware of such a service!)
 
