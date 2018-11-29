@@ -20,7 +20,7 @@ These are all python dependencies installable with pip/MacPorts/HomeBrew dependi
 
 `python3 NCBI_SRA_subscribe_bot.py -t 94777 --reldate 360 --gmail_password YOURPASSWORDHERE --gmail_sender YOUR_GOOGLE_EMAIL_ADDRESS`
 
-This script command line would email you all the elaterid (Family Elateridae; NCBI taxon id 94777) sequences which have released in the past year.
+This script command line would email you all the elaterid (Family Phengodidae; [NCBI taxon id 94777](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=94777)) sequences which have released in the past year.
 
 `python3 NCBI_SRA_subscribe_bot.py -h` to see the help documentation
 
